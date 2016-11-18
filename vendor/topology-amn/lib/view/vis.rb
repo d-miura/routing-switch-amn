@@ -4,7 +4,7 @@ require 'erb'
 module View
   # Topology controller's GUI (vis.js).
   class Vis
-    def initialize(output = 'index.html')
+    def initialize(output = 'topology.js')
       @output = output
     end
 
@@ -15,7 +15,7 @@ module View
         outtext.push(sprintf("nodes.push({id: %d, label: '%#x', image:DIR+'switch.jpg', shape: 'image'});", each.to_i, each.to_hex))
       end
       topology.links.each do |each|
-        #next unless nodes[each.dpid_a] && nodes[each.dpid_b]
+        # next unless nodes[each.dpid_a] && nodes[each.dpid_b]
         outtext.push(sprintf("edges.push({from: %d, to: %d});", each.dpid_a.to_i, each.dpid_b.to_i))
       end
       #added (2016.11.9) add ellipse with ip_address and link between host and switch
@@ -24,8 +24,9 @@ module View
         outtext.push(sprintf("edges.push({from: %d, to: %d});", each[1].to_i, each[2].to_i))#add link between host and switch(each[2]:switch dpid)
       end
       @topology = outtext
-      fhtml = open(@output, "w")
-      fhtml.write(ERB.new(File.open('./vendor/topology-amn/lib/view/topology.html').read).result(binding))
+      File.delete "./output/" + @output
+      fhtml = open("./output/" + @output, "w")
+      fhtml.write(ERB.new(File.open('./output/template/topology_template.js').read).result(binding))
     end
     # rubocop:enable AbcSize
 
