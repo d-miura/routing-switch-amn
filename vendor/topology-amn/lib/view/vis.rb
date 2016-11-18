@@ -25,7 +25,7 @@ module View
       end
       @topology = outtext
       fhtml = open(@output, "w")
-      fhtml.write(ERB.new(File.open('lib/view/topology.html').read).result(binding))
+      fhtml.write(ERB.new(File.open('./vendor/topology-amn/lib/view/topology.html').read).result(binding))
     end
     # rubocop:enable AbcSize
 

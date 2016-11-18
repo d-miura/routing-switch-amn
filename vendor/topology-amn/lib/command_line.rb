@@ -34,7 +34,6 @@ class CommandLine
   end
 
   def define_text_command
-    default_command :text
     desc 'Displays topology information (text mode)'
     command :text do |cmd|
       cmd.action(&method(:create_text_view))
@@ -50,6 +49,7 @@ class CommandLine
   end
 
   def define_visjs_command
+    default_command :visjs
     desc 'Displays topology information (visjs mode)'
     arg_name 'output_file'
     command :visjs do |cmd|
