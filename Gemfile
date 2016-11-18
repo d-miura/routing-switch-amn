@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+gem 'ruby-graphviz'
 
 gem 'activesupport'
 gem 'bundler'
