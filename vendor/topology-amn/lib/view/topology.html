@@ -1,0 +1,49 @@
+
+<!doctype html>
+<html>
+<head>
+  <title>Network topology</title>
+
+  <script type="text/javascript" src="lib/view/vis.js"></script>
+  <link href="lib/view/vis-network.min.css" rel="stylesheet" type="text/css" />
+
+  <style type="text/css">
+    #mynetwork {
+      width: 1000px;
+      height: 800px;
+      border: 1px solid lightgray;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="mynetwork"></div>
+
+  <script type="text/javascript">
+    var nodes = null;
+    var edges = null;
+    var network = null;
+
+    var DIR = './images/';
+    // Create a data table with nodes.
+    nodes = [];
+
+    // Create a data table with links.
+    edges = [];
+
+    <% @topology.each do |topology| %>
+    <%= topology %>
+    <% end %>
+
+    // create a network
+    var container = document.getElementById('mynetwork');
+    var data = {
+      nodes: nodes,
+      edges: edges
+    };
+    var options = {};
+    network = new vis.Network(container, data, options);
+  </script>
+
+</body>
+</html>
