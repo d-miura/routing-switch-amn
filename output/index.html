@@ -8,7 +8,7 @@
   <link href="vis-network.min.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="./topology.js"></script>
   <!-- <script type="text/javascript" src="vendor/topology-amn/lib/view/paths.js"></script> -->
-  <script type="text/javascript" src="./b.js"></script>
+  <script type="text/javascript" src="./path.js"></script>
 
   <style type="text/css">
     #mynetwork {
@@ -23,47 +23,30 @@
   <div id="mynetwork"></div>
 
   <script type="text/javascript">
-  var last_date = null;
-  var now_date = 1;
+  var last_date = [1, 2];
+  var now_date = [3, 4];
+  
+  function getUpdate( ) {
+    var fileNames = ["./topology.js", "./path.js"];
+    for(i=0; i < fileNames.length; i++){
+      var xhr = new XMLHttpRequest();
+      // xhr.addEventListener('loadend',loadendFunction(ev));
+      xhr.open('GET', fileNames[i], false);
+      xhr.send();
+      var date = new Date(xhr.getResponseHeader("last-modified"));
+      now_date[i] = date.getTime()
+      // console.log(now_date);
+      if(now_date[i] != last_date[i]){
+        console.log(now_date)
+        last_date[i] = now_date[i];
+        require(fileNames[i]);
+      }
 
-  function getUpdate(fileName) {
+    }
 
-	var obj = createRequest(); //リクエスト
-	if (obj) {
-		//通信実行
-		obj.open("get",fileName);
-		obj.onreadystatechange = function() {
-			//通信完了
-			if (obj.readyState == 4 && obj.status == 200) {
-				//読込後の処理
-				var date = new Date(obj.getResponseHeader("last-modified"));
-				now_date = date.getTime()
-			}
-		}
-		obj.send(null);
-	}
-  if(last_date != now_date){
-    last_date = now_date
-    require('./topology.js')
+    setTimeout("getUpdate()",1000);
   }
-    console.log(now_date)
-  last_date = now_date
-  setTimeout("getUpdate('./topology.js')",1000);
-}
 
-//非同期通信オブジェクトの生成
-function createRequest() {
-	try {
-		return new XMLHttpRequest();
-	} catch (e) {
-		try {
-			return new ActiveXObject("Microsoft.XMLHTTP");
-		} catch (e) {
-			return null;
-		}
-	}
-	return null;
-}
   function require(uri) {
     var req = new XMLHttpRequest();
     req.open("GET", uri, false);
@@ -88,32 +71,14 @@ function createRequest() {
       nodes: nodes,
       edges: edges
     };
+
     var options = {
       layout: {
         randomSeed: 114514,
-        hierarchical: {
-          enabled:true,
-          levelSeparation: 150,
-          nodeSpacing: 400,
-          treeSpacing: 200,
-          blockShifting: true,
-          edgeMinimization: true,
-          parentCentralization: true,
-          direction: 'UD',        // UD, DU, LR, RL
-          sortMethod: 'hubsize'   // hubsize, directed
-        },
-        physics:{
-          enabled: false
-        },
-        nodes:{
-          physics: false
-        }
       }
-
-
     };
     network = new vis.Network(container, data, options);
-    getUpdate("./topology.js")
+    getUpdate( )
   }
     require('./topology.js')
 

@@ -30,7 +30,30 @@ class Path < Trema::Controller
   def save(full_path, packet_in)
     @full_path = full_path
     @packet_in = packet_in
+    outtext = "paths = [];\n"
     logger.info 'Creating path: ' + @full_path.map(&:to_s).join(' -> ')
+
+    label = 0
+    flag = true
+    @full_path.each do |each|
+      if each.instance_of?(Pio::Mac) then
+        id = each
+      else
+        id = each[0]
+      end
+      if flag then
+        outtext += "paths.push({label:'%d', from:%d, "% [label, id]
+        flag = false
+        label += 1
+      else
+        outtext += " to: %d });\n" % id
+        flag = true
+      end
+    end
+    File.delete "./output/path.js"
+    fhtml = open("./output/path.js", "w")
+    # fhtml.write(ERB.new(File.open('./output/template/topology_template.js').read).result(binding))
+    fhtml.write(outtext)
     flow_mod_add_to_each_switch
     self
   end
