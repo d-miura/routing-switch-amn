@@ -27,6 +27,12 @@ class Path < Trema::Controller
 
   attr_reader :packet_in
 
+  def delete_jsfile()
+    File.delete "./output/path.js"
+    fhtml = open("./output/path.js", "w")
+    fhtml.write("paths = [];\n")
+  end
+
   def save(full_path, packet_in)
     @full_path = full_path
     @packet_in = packet_in
@@ -62,6 +68,7 @@ class Path < Trema::Controller
     logger.info 'Deleting path: ' + @full_path.map(&:to_s).join(' -> ')
     Path.destroy self
     flow_mod_delete_to_each_switch
+    delete_jsfile()
   end
 
   def port?(port)

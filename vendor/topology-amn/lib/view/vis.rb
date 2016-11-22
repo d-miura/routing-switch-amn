@@ -6,6 +6,13 @@ module View
   class Vis
     def initialize(output = 'topology.js')
       @output = output
+      delete_jsfile()
+    end
+    def delete_jsfile()
+      puts "ninja"
+      File.delete "./output/path.js"
+      fhtml = open("./output/path.js", "w")
+      fhtml.write("paths = [];\n")
     end
 
     # rubocop:disable AbcSize

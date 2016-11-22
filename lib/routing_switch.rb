@@ -28,11 +28,29 @@ class RoutingSwitch < Trema::Controller
     Slice
   end
 
+  def delete_jsfiles()
+    if File.exist?('./output/topology.js')
+      File.delete "./output/topology.js"
+    end
+    fhtml = open("./output/topology.js", "w")
+    fhtml.write("nodes = [];\nedges = [];\n")
+
+
+    if File.exist?('./output/path.js')
+      File.delete "./output/path.js"
+    end
+    fhtml = open("./output/path.js", "w")
+    fhtml.write("paths = [];\n")
+  end
+
+
   def start(args)
     @options = Options.new(args)
     @path_manager = start_path_manager
     @topology = start_topology
     logger.info 'Routing Switch started.'
+    delete_jsfiles()
+
   end
 
   delegate :switch_ready, to: :@topology
