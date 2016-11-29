@@ -102,7 +102,7 @@ class BreadthFirstSearch
     found
   end
 
-  def print_path(queue, index)
+  def print_path(queue, index, is_last=false)
     prev_id = nil
     outtext = ""
     outtext +="paths.push([]);\n"
@@ -132,7 +132,12 @@ class BreadthFirstSearch
   # fhtml.write(ERB.new(File.open('./output/template/topology_template.js').read).result(binding))
   fhtml.write(outtext)
   fhtml.close()
-
+  if is_last then
+    tmp = []
+    tmp << queue.last
+    print_path(tmp, index+1)
+  end
+ 
   end
 
 
@@ -164,7 +169,7 @@ class BreadthFirstSearch
         tmp.append(n)
         queue.append(tmp)
         if n == goal.name
-          print_path(queue, i)
+          print_path(queue, i, true)
           return queue
         end
       end
