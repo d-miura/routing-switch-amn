@@ -57,6 +57,7 @@ class Graph
   end
 
   def bfs(source_mac, destination_mac)
+    puts "bfs"
     return if @graph[destination_mac].empty?
     route = BreadthFirstSearch.new(@graph).run(source_mac, destination_mac)
     route.reject { |each| each.is_a? Integer }

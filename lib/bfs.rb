@@ -105,6 +105,7 @@ class BreadthFirstSearch
     flag = true
     prev_id = nil
     index = 0
+    outtext = ""
     queue.each do |each|
       outtext +="paths.push([]);\n"
       if each.instance_of?(Pio::Mac) then
