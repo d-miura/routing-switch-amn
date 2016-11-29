@@ -77,7 +77,8 @@ class BreadthFirstSearch
     fhtml = open("./output/path.js", "w")
     fhtml.write("paths = [];\n")
     fhtml.close()
-    ans = search(queue, goal_node, 1)
+    @visited << start_node.name
+    ans = search(queue, goal_node, 0)
 
     return ans.last
 
@@ -110,6 +111,8 @@ class BreadthFirstSearch
       qeach.each do |each|
         if each.instance_of?(Pio::Mac) then
           id = each
+        elsif each.is_a?(Integer) then
+          next
         else
           id = each[0]
         end
@@ -121,7 +124,7 @@ class BreadthFirstSearch
           prev_id = id
           next
         end
-        outtext += "paths[%d].push({from:%d, to: %d });\n"% [index - 1 , prev_id, id]
+        outtext += "paths[%d].push({from:%d, to: %d });\n"% [index, prev_id, id]
         prev_id = id
       end
   end
@@ -137,13 +140,13 @@ class BreadthFirstSearch
     print_path(queue,i)
     start_node_tmp = queue[0]
     start_node = start_node_tmp[0]
-    @visited << start_node
 
-    list = []
 
-    while queue[0].length == i do
+
+    while queue[0].length == i+1 do
+      list = []
       current_node_name_tmp = queue.shift
-      current_node_name = current_node_name_tmp[i-1]
+      current_node_name = current_node_name_tmp[i]
       current_node = find(current_node_name, @all)
       current_node.neighbors.each do |adjacent_node|
         neighbor = adjacent_node
@@ -151,6 +154,10 @@ class BreadthFirstSearch
         list.append(neighbor)
         @visited << neighbor
       end
+      puts @visited
+      puts "------------------------------"
+      puts list
+      puts "----------------------------------"
 
       list.each do |n|
         tmp = Array.new(current_node_name_tmp)
