@@ -157,6 +157,7 @@ class BreadthFirstSearch
         tmp.append(n)
         queue.append(tmp)
         if n == goal.name
+          print_path(queue, i)
           return queue
         end
       end
