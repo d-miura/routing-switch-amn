@@ -124,7 +124,7 @@ class BreadthFirstSearch
     fhtml = open("./output/path.js", "a")
     # fhtml.write(ERB.new(File.open('./output/template/topology_template.js').read).result(binding))
     fhtml.write(outtext)
-    html.close()
+    fhtml.close()
 
   end
 
