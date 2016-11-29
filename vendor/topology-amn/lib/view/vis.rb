@@ -9,7 +9,6 @@ module View
       delete_jsfile()
     end
     def delete_jsfile()
-      puts "ninja"
       File.delete "./output/path.js"
       fhtml = open("./output/path.js", "w")
       fhtml.write("paths = [];\n")

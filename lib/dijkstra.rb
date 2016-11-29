@@ -56,6 +56,7 @@ class Dijkstra
     find(start, @all).distance = 0
     maybe_update_neighbors_of(@unvisited.shift) until @unvisited.empty?
     result = path_to(goal)
+    p result
     result.include?(start) ? result : []
   end
 

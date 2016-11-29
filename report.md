@@ -58,14 +58,24 @@ nodes.push({id: 75059993789508, label: '44:44:44:44:44:44', image:DIR+'host.png'
 edges.push({from: 75059993789508, to: 6});
 ```
 
-また，パスの出力は[/lib/algolism](./lib/path.rb) で行った．パケットを送る際に最短経路を探索がなされるためにこのファイル内のメソッドが呼び出される．そのメソッド内でそのパスの出力とアルゴリズムのそれぞれのステップでの探索したノードの表示を行う．出力するファイルは[/output/path.js](./output/path.js)である．以下にその例を示す．
+また，パスの出力は[/lib/algolism](./lib/path.rb) で行った．パケットを送る際に最短経路を探索がなされる．その際にこのファイル内のメソッドが呼び出される．そのメソッド内でそのパスの出力とアルゴリズムのそれぞれのステップでの探索したノードの表示を行う．出力するファイルは[/output/path.js](./output/path.js)である．以下にその例を示す．
 
 ```
 paths = [];
-paths.push({label:'0', from:18764998447377,  to: 1 });
-paths.push({label:'1', from:1,  to: 5 });
-paths.push({label:'2', from:5,  to: 6 });
-paths.push({label:'3', from:6,  to: 75059993789508 });
+paths.push([]);
+paths[0].push({label:'0', from:18764998447377,  to: 1 });
+paths.push([]);
+paths[1].push({label:'0', from:18764998447377,  to: 1 });
+paths[1].push({label:'1', from:1,  to: 5 });
+paths.push([]);
+paths[2].push({label:'0', from:18764998447377,  to: 1 });
+paths[2].push({label:'1', from:1,  to: 5 });
+paths[2].push({label:'2', from:5,  to: 6 });
+paths.push([]);
+paths[3].push({label:'0', from:18764998447377,  to: 1 });
+paths[3].push({label:'1', from:1,  to: 5 });
+paths[3].push({label:'2', from:5,  to: 6 });
+paths[3].push({label:'3', from:6,  to: 75059993789508 });
 ```
 
 ## Javascript内での動作
