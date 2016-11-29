@@ -113,6 +113,9 @@ class BreadthFirstSearch
         else
           id = each[0]
         end
+        if prev_id == id then
+          next
+        end
         if flag == true then
           flag = false
           prev_id = id
