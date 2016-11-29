@@ -14,6 +14,94 @@
 >  * 選択した経路やアルゴリズムの動作が分かるように工夫してください
 
 # 経路選択アルゴリズム
+##選択したアルゴリズムについて
+今回，私達のグループではダイクストラ法の代わりに幅優先探索アルゴリズムを実装した．  
+実装したアルゴリズムにおいて経路が探索される流れの要約を以下に示す．
+
+```
+１．空のキューを定義し，スタートノードをキューに追加する．
+２．キューの先頭からノードを取り出す．取り出したノードについて以下の処理を行う．
+　・取り出したノードがゴールノードの場合，その時点で探索を終了し，スタートノードからゴールノードまでの最短経路を返す．
+　・上記以外の場合，取り出したノードに接続された全てのノードを新たにキューに追加する．
+３．探索が終了するまで２を繰り返す．
+```
+
+##実装
+今回は， ```bfs.rb``` の ```BreadthFirstSearch``` クラスにおいて，幅優先探索を用いて最短経路を得るアルゴリズムを実装した．以下に幅優先探索の主な実装部分である ```run```メソッドと ```search``` メソッドについてソースコードを貼付する．
+
+```
+  def run(start, goal)
+    start_node = find(start, @all)
+    goal_node = find(goal, @all)
+
+    queue = []
+    tmp = []
+
+    tmp << start_node.name
+    queue << tmp
+
+    ans = search(queue, goal_node, 1)
+    return ans.last
+  end
+```
+
+```
+  def search(queue, goal, i)
+    start_node_tmp = queue[0]
+    start_node = start_node_tmp[0]   #スタートノードをキューの先頭から取り出す 
+    @visited << start_node           #探索済みリストにスタートノードを追加
+
+    list = []   #空のリストを定義
+
+    while queue[0].length == i do
+      current_node_name_tmp = queue.shift   #キューの先頭からノードを取り出す
+      current_node_name = current_node_name_tmp[i-1]
+      current_node = find(current_node_name, @all)
+      current_node.neighbors.each do |adjacent_node|   #取り出したノードに対して接続されたノードを探索
+        neighbor = adjacent_node   #接続ノード
+        next if @visited.include?(neighbor)   #探索済みのノードならば探索しない
+        list.append(neighbor)
+        @visited << neighbor   #探索済みリストに追加
+      end
+
+      list.each do |n|
+        tmp = Array.new(current_node_name_tmp)
+        tmp.append(n)
+        queue.append(tmp)   #スタートノードからの経路をキューに追加
+        #ゴールノードに到達するとその時点におけるキューを返す
+        if n == goal.name
+          return queue
+        end
+      end
+    end
+    return search(queue, goal, i+1)   #再帰呼出し
+  end
+```
+
+実装した点について，ソースコード内のコメントと共に大まかに以下に示す．  
+初めに， ```search``` メソッドは ```run``` メソッド内で呼び出される際に，スタートノードだけが先頭に格納された状態のキュー，ゴールノードの値を引数で受け取る．  
+先頭の要素をキューから取り出し，その要素に接続された全ての子ノードについて既に探索済みであるかどうかを調べる．そのうち探索済みでない子ノードについて，探索済みの印を付け，親ノードと共にキューの末尾に追加していく．この動作をゴールノードが発見されるまで繰り返す．ゴールノードが発見されると，その時点におけるキューの値をリターンする．このときキューの最後尾の要素には，スタートノードからゴールノードまでの最短経路が格納されているので，最終的にその値を ```Creating path:``` として出力する．  
+  
+```graph.rb``` において， 既に実装されていた ```dijkstra``` メソッドを参考に ```bfs```メソッドを定義した．また， ```path_manager.rb```の ```maybe_create_shortest_path``` メソッドにおいて， ```dijkstra``` メソッドの代わりに ```bfs```メソッドを呼ぶように変更した．
+
+##実行結果
+今回実装した幅優先探索を用いて，ホスト間でパケットを送受信し ```host1``` から ```host4``` までの最短経路を出力した結果を以下に示す．このとき，既に実装されていたダイクストラ法を用いた場合と同じ結果が出力されたため，正しく実装できていることがわかる．
+
+```
+$ ./bin/trema send_packets --source host1 --dest host4
+$ ./bin/trema send_packets --source host4 --dest host1
+$ ./bin/trema send_packets --source host1 --dest host4
+```   
+
+```
+Path Manager started.
+vis.js mode, output = topology.js
+Topology started (vis.js mode, output = topology.js).
+Routing Switch started.
+Creating path: 11:11:11:11:11:11 -> 0x1:1 -> 0x1:4 -> 0x5:2 -> 0x5:5 -> 0x6:2 -> 0x6:1 -> 44:44:44:44:44:44
+Creating path: 44:44:44:44:44:44 -> 0x6:1 -> 0x6:2 -> 0x5:5 -> 0x5:2 -> 0x1:4 -> 0x1:1 -> 11:11:11:11:11:11
+```
+
 
 # ブラウザでの可視化
 ## Rubyプログラム内での動作
