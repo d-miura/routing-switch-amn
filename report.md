@@ -203,7 +203,9 @@ Ajaxというjavascript内でhttp通信を行う方式を用いる．XMLHttpRequ
 ### getUpdate関数
 この関数ではファイルが更新されているか否かを判定する．Ajaxで各ファイルを読み込み，ヘッダーのlast-modifiedの情報を取得する．この情報はファイルの最終更新日時を表す．取得したlast-modifiedが前回読み込んだ日時から更新されていたらrequire関数を呼び出す．更新されていなかったら```  setTimeout("getUpdate()",1000);```でタイマーをセットし，1秒後にgetUpdate関数を呼び出し，1秒毎にファイルの更新確認を行っている．
 
-
+##実行結果
+以下に実行した時のアルゴリズムの動作と最短パスを表示する．
+![fig1](https://github.com/handai-trema/routing-switch-team-amn/result.gif)
 
 
 
