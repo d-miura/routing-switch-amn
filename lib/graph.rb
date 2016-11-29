@@ -1,4 +1,5 @@
 require 'dijkstra'
+require 'bfs'
 
 # Network topology graph
 class Graph
@@ -34,7 +35,30 @@ class Graph
 
   def dijkstra(source_mac, destination_mac)
     return if @graph[destination_mac].empty?
+
+    # @graph.each_key {|key|
+    # print("key = #{key}\n")
+    # print("graph = #{@graph[key]}\n")
+    # }
     route = Dijkstra.new(@graph).run(source_mac, destination_mac)
+    route.reject { |each| each.is_a? Integer }
+  end
+
+  def bellman_ford(source_mac, destination_mac)
+    return if @graph[destination_mac].empty?
+    route = BellmanFord.new(@graph).run(source_mac, destination_mac)
+    route.reject { |each| each.is_a? Integer }
+  end
+
+  def kruskal(source_mac, destination_mac)
+    return if @graph[destination_mac].empty?
+    route = Kruskal.new(@graph).run(source_mac, destination_mac)
+    route.reject { |each| each.is_a? Integer }
+  end
+
+  def bfs(source_mac, destination_mac)
+    return if @graph[destination_mac].empty?
+    route = BreadthFirstSearch.new(@graph).run(source_mac, destination_mac)
     route.reject { |each| each.is_a? Integer }
   end
 end
