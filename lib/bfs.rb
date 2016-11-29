@@ -102,23 +102,25 @@ class BreadthFirstSearch
   end
 
   def print_path(queue, index)
-    flag = true
     prev_id = nil
     outtext = ""
-    queue.each do |each|
-      outtext +="paths.push([]);\n"
-      if each.instance_of?(Pio::Mac) then
-        id = each
-      else
-        id = each[0]
-      end
-      if flag == true then
-        flag = false
+    outtext +="paths.push([]);\n"
+    queue.each do |qeach|
+      flag = true
+      qeach.each do |each|
+        if each.instance_of?(Pio::Mac) then
+          id = each
+        else
+          id = each[0]
+        end
+        if flag == true then
+          flag = false
+          prev_id = id
+          next
+        end
+        outtext += "paths[%d].push({from:%d, to: %d });\n"% [index, prev_id, id]
         prev_id = id
-        next
       end
-      outtext += "paths[%d].push({from:%d, to: %d });\n"% [index, prev_id, id]
-      prev_id = id
   end
   fhtml = open("./output/path.js", "a")
   # fhtml.write(ERB.new(File.open('./output/template/topology_template.js').read).result(binding))
