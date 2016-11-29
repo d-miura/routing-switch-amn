@@ -205,7 +205,7 @@ Ajaxというjavascript内でhttp通信を行う方式を用いる．XMLHttpRequ
 
 ##実行結果
 以下に実行した時のアルゴリズムの動作と最短パスを表示する．
-![fig1](https://github.com/handai-trema/routing-switch-team-amn/result.gif)
+[実行結果](https://github.com/handai-trema/routing-switch-amn/blob/master/result.gif)
 
 
 
