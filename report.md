@@ -93,8 +93,8 @@
     route.reject { |each| each.is_a? Integer }
   end
 ```
-
-```  def maybe_create_shortest_path(packet_in)
+```
+  def maybe_create_shortest_path(packet_in)
     shortest_path = @graph.bfs(packet_in.source_mac,
                                     packet_in.destination_mac)
     return unless shortest_path
