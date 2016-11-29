@@ -18,15 +18,15 @@
 # ブラウザでの可視化
 ## Rubyプログラム内での動作
 ### 前回のプログラムの使用
-TopologyControllerのクラスを前回作成したVis.jsで表示するプログラムを使用した．配布されたソースコードではTopologyControllerの実装は./vendorフォルダ内に入っていた．そのフォルダに前回作成したtopology-amnのプログラム一式を入れた．そして，そのプログラムを使用する為にrouting_switch.rbの一行目を以下のように変更した．
+TopologyControllerのクラスを前回作成したVis.jsで表示するプログラムを使用した．配布されたソースコードではTopologyControllerの実装は./vendorフォルダ内に入っていた．そのフォルダに前回作成したtopology-amnのプログラム一式を入れた．そして，そのプログラムを使用する為に[routing_switch.rb](./lib/routing_switch.rb)の一行目を以下のように変更した．
 
 ```
 #$LOAD_PATH.unshift File.join(__dir__, '../vendor/topology/lib')
 $LOAD_PATH.unshift File.join(__dir__, '../vendor/topology-amn/lib')
 ```
 ### javascriptファイルの出力
-javascriptファイルにネットワークを出力する．まず，トポロジを出力する部分はTopologyController内の/lib/view/vis.rbで実装した．
-スイッチのノードとエッジ，ホストのノードとエッジをそれぞれvis.js形式で出力する．出力するファイルは/output/topology.jsとする．
+javascriptファイルにネットワークを出力する．まず，トポロジを出力する部分はTopologyController内の[/lib/view/vis.rb](./vendor/topology-amn/lib/view/vis.rb)で実装した．
+スイッチのノードとエッジ，ホストのノードとエッジをそれぞれvis.js形式で出力する．出力するファイルは[/output/topology.js](./output/topology.js)とする．
 
 以下に仮想スイッチで動作させた時のtopology.jsの例を示す．
 
@@ -58,7 +58,7 @@ nodes.push({id: 75059993789508, label: '44:44:44:44:44:44', image:DIR+'host.png'
 edges.push({from: 75059993789508, to: 6});
 ```
 
-また，パスの出力は/lib/path.rb で行った．パケットを送る際に最短経路を探索がなされ，見つかった場合にPathクラスのsaveメソッドが呼び出される．そのメソッド内でそのパスの出力を行う．出力するファイルは/output/path.jsである．以下にその例を示す．
+また，パスの出力は[/lib/path.rb](./lib/path.rb) で行った．パケットを送る際に最短経路を探索がなされ，見つかった場合にPathクラスのsaveメソッドが呼び出される．そのメソッド内でそのパスの出力を行う．出力するファイルは[/output/path.js](./output/path.js)である．以下にその例を示す．
 
 ```
 paths = [];
@@ -69,7 +69,7 @@ paths.push({label:'3', from:6,  to: 75059993789508 });
 ```
 
 ## Javascript内での動作
-今回ブラウザでの可視化では，トポロジ情報または最短経路情報が更新された場合に自動で表示も更新されるようにする．javascript内の関数は2つである．メインのコードは/output/index.html内に書かれている．
+今回ブラウザでの可視化では，トポロジ情報または最短経路情報が更新された場合に自動で表示も更新されるようにする．javascript内の関数は2つである．メインのコードは[/output/index.html](./output/index.html)内に書かれている．
 
 ### require関数
 topology.js，path.jsファイルを読み込み，実行する．以下にその部分を示す．
