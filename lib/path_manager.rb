@@ -11,6 +11,7 @@ class PathManager < Trema::Controller
 
   # This method smells of :reek:FeatureEnvy but ignores them
   def packet_in(_dpid, message)
+    puts "packet_in"
     path = maybe_create_shortest_path(message)
     ports = path ? [path.out_port] : @graph.external_ports
     ports.each do |each|

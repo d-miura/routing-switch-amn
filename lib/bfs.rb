@@ -73,7 +73,10 @@ class BreadthFirstSearch
 
     tmp << start_node.name
     queue << tmp
-
+    File.delete "./output/path.js"
+    fhtml = open("./output/path.js", "w")
+    fhtml.write("paths = [];\n")
+    fhtml.close()
     ans = search(queue, goal_node, 1)
 
     return ans.last
@@ -98,7 +101,36 @@ class BreadthFirstSearch
     found
   end
 
+  def print_path(queue, index)
+    flag = true
+    prev_id = nil
+    index = 0
+    outtext = ""
+    queue.each do |each|
+      outtext +="paths.push([]);\n"
+      if each.instance_of?(Pio::Mac) then
+        id = each
+      else
+        id = each[0]
+      end
+      if flag == true then
+        flag = false
+        prev_id = id
+        next
+      end
+      outtext += "paths[%d].push({from:%d, to: %d });\n"% [index, prev_id, id]
+      prev_id = id
+    end
+    fhtml = open("./output/path.js", "a")
+    # fhtml.write(ERB.new(File.open('./output/template/topology_template.js').read).result(binding))
+    fhtml.write(outtext)
+    html.close()
+
+  end
+
+
   def search(queue, goal, i)
+    print_path(queue,i)
     start_node_tmp = queue[0]
     start_node = start_node_tmp[0]
     @visited << start_node
