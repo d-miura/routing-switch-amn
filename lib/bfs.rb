@@ -104,7 +104,6 @@ class BreadthFirstSearch
   def print_path(queue, index)
     flag = true
     prev_id = nil
-    index = 0
     outtext = ""
     queue.each do |each|
       outtext +="paths.push([]);\n"
@@ -120,11 +119,11 @@ class BreadthFirstSearch
       end
       outtext += "paths[%d].push({from:%d, to: %d });\n"% [index, prev_id, id]
       prev_id = id
-    end
-    fhtml = open("./output/path.js", "a")
-    # fhtml.write(ERB.new(File.open('./output/template/topology_template.js').read).result(binding))
-    fhtml.write(outtext)
-    fhtml.close()
+  end
+  fhtml = open("./output/path.js", "a")
+  # fhtml.write(ERB.new(File.open('./output/template/topology_template.js').read).result(binding))
+  fhtml.write(outtext)
+  fhtml.close()
 
   end
 
