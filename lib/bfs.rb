@@ -57,7 +57,7 @@ class BreadthFirstSearch
     path = []
 
     while(node != start) do
-      path.unshift(node) # unshift adds the node to the beginning of the array
+      path.unshift(node)
       node = @edge_to[node]
     end
 
@@ -75,27 +75,17 @@ class BreadthFirstSearch
     queue << tmp
 
     ans = search(queue, goal_node, 1)
-    puts "ans = #{ans.last}"
-    path = ans.last
-
-    puts path
 
     return ans.last
 
-    #result = path_to(goal)
-    #result.include?(start) ? result : []
   end
 
   private
 
-  # If we visited the node, so there is a path
-  # from our source node to it.
   def has_path_to?(node)
     @visited.include?(node)
   end
 
-  # This method smells of :reek:FeatureEnvy but ignores them
-  # This method smells of :reek:DuplicateMethodCall but ignores them
   def path_to(goal)
     [find(goal, @all)].tap do |result|
       result.unshift result.first.prev while result.first.prev
@@ -115,27 +105,20 @@ class BreadthFirstSearch
 
     list = []
 
-    #puts "length = #{first_element_length}"
     while queue[0].length == i do
-      current_node_name_tmp = queue.shift   #current_node_name = [start]
+      current_node_name_tmp = queue.shift
       current_node_name = current_node_name_tmp[i-1]
       current_node = find(current_node_name, @all)
-      #current_node = current_node_name
-      #puts "current_node = #{current_node.name}"
       current_node.neighbors.each do |adjacent_node|
-        #neighbor = find(adjacent_node, @all)
         neighbor = adjacent_node
-        #puts "neighbor = #{neighbor.name}"
         next if @visited.include?(neighbor)
         list.append(neighbor)
         @visited << neighbor
       end
-      puts "list = #{list}"
-      puts goal
 
       list.each do |n|
-        tmp = Array.new(current_node_name_tmp)   #tmp = [current_node]
-        tmp.append(n)   #tmp = [current_node, neighbor]
+        tmp = Array.new(current_node_name_tmp)
+        tmp.append(n)
         queue.append(tmp)
         if n == goal.name
           return queue
