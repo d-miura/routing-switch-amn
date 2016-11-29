@@ -22,6 +22,9 @@
 <body>
 
   <div id="mynetwork"></div>
+  <input type="button" value="prev" onclick="buttonClick(-1);"/>
+  <input type="button" value="next" onclick="buttonClick(1);"/>
+
 
 
 </body>
@@ -33,6 +36,20 @@ var edges = [];
 var network = [];
 var paths = [];
 var DIR = './images/';
+var globalPathIndex = 0;
+
+function buttonClick(diff){
+  globalPathIndex += diff;
+  if(globalPathIndex >= paths.length){
+    globalPathIndex = 0;
+  }else if(globalPathIndex < 0){
+    globalPathIndex = paths.length -1;
+  }
+  console.log(globalPathIndex);
+  require(globalPathIndex)
+
+
+}
 
 function getUpdate( ) {
   var fileNames = ["./topology.js", "./path.js"];
@@ -47,7 +64,7 @@ function getUpdate( ) {
     if(now_date[i] != last_date[i]){
       console.log(nodes);
       last_date[i] = now_date[i];
-      require(fileNames[i]);
+      require(0);
     }
 
   }
@@ -55,7 +72,7 @@ function getUpdate( ) {
   setTimeout("getUpdate()",1000);
 }
 
-function require(uri) {
+function require(pathIndex) {
   var req = new XMLHttpRequest();
   req.open("GET", "./topology.js", false);
   req.send("");
@@ -65,10 +82,10 @@ function require(uri) {
   req.send("");
   eval(req.responseText);
 
-  for(i=0;i<paths.length;i++){
-    labelID = paths[i].label;
-    fromID = paths[i].from;
-    toID = paths[i].to;
+  for(i=0;i<paths[pathIndex].length;i++){
+    labelID = paths[pathIndex][i].label;
+    fromID = paths[pathIndex][i].from;
+    toID = paths[pathIndex][i].to;
     edges.some(function(v, i){
         if (v.from == fromID && v.to == toID || v.to == fromID && v.from == toID){
            edges.splice(i,1);
@@ -97,6 +114,6 @@ var req = new XMLHttpRequest();
 req.open("GET", "./topology.js", false);
 req.send("");
 eval(req.responseText);
-require('./path.js')
+require(0)
 </script>
 </html>

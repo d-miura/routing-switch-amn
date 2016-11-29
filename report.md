@@ -58,7 +58,7 @@ nodes.push({id: 75059993789508, label: '44:44:44:44:44:44', image:DIR+'host.png'
 edges.push({from: 75059993789508, to: 6});
 ```
 
-また，パスの出力は[/lib/path.rb](./lib/path.rb) で行った．パケットを送る際に最短経路を探索がなされ，見つかった場合にPathクラスのsaveメソッドが呼び出される．そのメソッド内でそのパスの出力を行う．出力するファイルは[/output/path.js](./output/path.js)である．以下にその例を示す．
+また，パスの出力は[/lib/algolism](./lib/path.rb) で行った．パケットを送る際に最短経路を探索がなされるためにこのファイル内のメソッドが呼び出される．そのメソッド内でそのパスの出力とアルゴリズムのそれぞれのステップでの探索したノードの表示を行う．出力するファイルは[/output/path.js](./output/path.js)である．以下にその例を示す．
 
 ```
 paths = [];
@@ -69,7 +69,7 @@ paths.push({label:'3', from:6,  to: 75059993789508 });
 ```
 
 ## Javascript内での動作
-今回ブラウザでの可視化では，トポロジ情報または最短経路情報が更新された場合に自動で表示も更新されるようにする．javascript内の関数は2つである．メインのコードは[/output/index.html](./output/index.html)内に書かれている．
+今回ブラウザでの表示では，トポロジ情報または最短経路情報が更新された場合に自動で表示も更新されるようにする．javascript内の関数は2つである．メインのコードは[/output/index.html](./output/index.html)内に書かれている．
 
 ### require関数
 topology.js，path.jsファイルを読み込み，実行する．以下にその部分を示す．
@@ -81,11 +81,10 @@ topology.js，path.jsファイルを読み込み，実行する．以下にそ�
   eval(req.responseText);
 ```
 Ajaxというjavascript内でhttp通信を行う方式を用いる．XMLHttpRequestでインスタンスを作り，GET命令でjavascriptファイルを読み込む．読み込んだ文字列をeval関数でjavascriptのコードとして実行する．こうすることで別ファイルに記述されたノードやエッジの情報などを配列に格納する．その後，vis.jsに配列を渡してブラウザ上で可視化する．
-
 その後，後述するgetUpdate関数を呼び出す．
 
 ### getUpdate関数
-この関数ではファイルが更新されているか否かを判定する．Ajaxで各ファイルを読み込み，ヘッダーのlast-modifiedの情報を取得する．この情報はファイルの最終更新日時を表す．取得したlast-modifiedが前回読み込んだ日時から更新されていたらrequire関数を呼び出す．更新されていなかったら```  setTimeout("getUpdate()",1000);```でタイマーをセットし，1秒後にまたgetUpdate関数を呼び出し，1秒毎にファイルの更新確認を行っている．
+この関数ではファイルが更新されているか否かを判定する．Ajaxで各ファイルを読み込み，ヘッダーのlast-modifiedの情報を取得する．この情報はファイルの最終更新日時を表す．取得したlast-modifiedが前回読み込んだ日時から更新されていたらrequire関数を呼び出す．更新されていなかったら```  setTimeout("getUpdate()",1000);```でタイマーをセットし，1秒後にgetUpdate関数を呼び出し，1秒毎にファイルの更新確認を行っている．
 
 
 
