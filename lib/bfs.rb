@@ -118,7 +118,7 @@ class BreadthFirstSearch
           prev_id = id
           next
         end
-        outtext += "paths[%d].push({from:%d, to: %d });\n"% [index, prev_id, id]
+        outtext += "paths[%d].push({from:%d, to: %d });\n"% [index - 1 , prev_id, id]
         prev_id = id
       end
   end
